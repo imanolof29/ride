@@ -1,11 +1,17 @@
 package com.imanolortiz.ride.users.infrastructure.db.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Table
 @Entity(name = "users")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     @Id

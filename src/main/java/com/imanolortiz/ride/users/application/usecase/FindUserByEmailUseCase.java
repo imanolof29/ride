@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class FindUserByEmail {
+public class FindUserByEmailUseCase {
 
     private final UserRepository userRepository;
 
     public User execute(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
 }

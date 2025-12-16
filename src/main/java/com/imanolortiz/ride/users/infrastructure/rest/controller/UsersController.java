@@ -1,6 +1,6 @@
 package com.imanolortiz.ride.users.infrastructure.rest.controller;
 
-import com.imanolortiz.ride.users.application.usecase.FindUserByEmail;
+import com.imanolortiz.ride.users.application.usecase.FindUserByEmailUseCase;
 import com.imanolortiz.ride.users.domain.model.User;
 import com.imanolortiz.ride.users.infrastructure.rest.dto.UserDto;
 import com.imanolortiz.ride.users.infrastructure.rest.mapper.UserDtoMapper;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UsersController {
 
-    private final FindUserByEmail findUserByEmail;
+    private final FindUserByEmailUseCase findUserByEmailUseCase;
 
     @GetMapping("/{email}")
     public ResponseEntity<UserDto> findUserByEmail(@PathVariable String email) {
-        User user = findUserByEmail.execute(email);
+        User user = findUserByEmailUseCase.execute(email);
         return ResponseEntity.ok(UserDtoMapper.toDto(user));
     }
 
