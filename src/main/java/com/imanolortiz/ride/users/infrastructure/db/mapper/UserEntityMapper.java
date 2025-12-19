@@ -12,6 +12,7 @@ public class UserEntityMapper {
     public static UserEntity toEntity(User model) {
         return UserEntity
                 .builder()
+                .id(model.getId())
                 .email(model.getEmail())
                 .passwordHash(model.getPassword())
                 .fullName(model.getFullName())
