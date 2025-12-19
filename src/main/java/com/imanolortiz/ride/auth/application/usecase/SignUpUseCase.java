@@ -1,6 +1,8 @@
 package com.imanolortiz.ride.auth.application.usecase;
 
+import com.imanolortiz.ride.auth.domain.model.AuthToken;
 import com.imanolortiz.ride.auth.infrastructure.dto.SignUpDto;
+import com.imanolortiz.ride.config.JwtTokenProvider;
 import com.imanolortiz.ride.users.domain.model.User;
 import com.imanolortiz.ride.users.domain.repository.UserRepository;
 import com.imanolortiz.ride.users.infrastructure.rest.mapper.UserDtoMapper;
@@ -15,14 +17,16 @@ public class SignUpUseCase {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public User execute(SignUpDto dto) {
+    public AuthToken execute(SignUpDto dto) {
         if (userRepository.emailExists(dto.getEmail())) {
             throw new RuntimeException("Email already in use");
         }
         String hashedPassword = passwordEncoder.encode(dto.getPassword());
-        return userRepository.save(UserDtoMapper.toDomain(dto, hashedPassword));
+        User user = userRepository.save(UserDtoMapper.toDomain(dto, hashedPassword));
+        return jwtTokenProvider.generateJWT(user.getId(), user.getEmail());
     }
 
 }
