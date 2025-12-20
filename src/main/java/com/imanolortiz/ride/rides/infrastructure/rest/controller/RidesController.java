@@ -1,5 +1,6 @@
 package com.imanolortiz.ride.rides.infrastructure.rest.controller;
 
+import com.imanolortiz.ride.auth.domain.model.CurrentUser;
 import com.imanolortiz.ride.rides.application.usecase.FindRideByIdUseCase;
 import com.imanolortiz.ride.rides.application.usecase.FindUserRidesUseCase;
 import com.imanolortiz.ride.rides.application.usecase.RequestRideUseCase;
@@ -10,6 +11,7 @@ import com.imanolortiz.ride.rides.infrastructure.rest.mapper.RideDtoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,8 +36,11 @@ public class RidesController {
     }
 
     @PostMapping("/request")
-    public ResponseEntity<?> requestRide(@RequestBody() RequestRideDto dto) {
-        Ride ride = requestRideUseCase.execute(dto);
+    public ResponseEntity<?> requestRide(
+            @AuthenticationPrincipal CurrentUser currentUser,
+            @RequestBody() RequestRideDto dto
+    ) {
+        Ride ride = requestRideUseCase.execute(dto, currentUser.getId());
         return ResponseEntity.ok(RideDtoMapper.toDto(ride));
     }
 

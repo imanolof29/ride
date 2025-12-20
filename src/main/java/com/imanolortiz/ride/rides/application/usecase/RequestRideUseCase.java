@@ -16,8 +16,8 @@ public class RequestRideUseCase {
     private final RideRepository rideRepository;
     private final UserRepository userRepository;
 
-    public Ride execute(RequestRideDto dto) {
-        User user = userRepository.findById(1L)
+    public Ride execute(RequestRideDto dto, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return rideRepository.save(RideDtoMapper.toDomain(dto, user));
     }
