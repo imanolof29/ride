@@ -1,5 +1,6 @@
-package com.imanolortiz.ride.users.infrastructure.db.entity;
+package com.imanolortiz.ride.notifications.infrastructure.db.entity;
 
+import com.imanolortiz.ride.users.infrastructure.db.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,25 +12,26 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 
 @Table
-@Entity(name = "users")
+@Entity(name = "device_tokens")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class DeviceTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name")
-    private String fullName;
+    @Column(name = "device_token", nullable = false, unique = true)
+    private String deviceToken;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
+    private Long userId;
 
-    @Column(name = "password_hash")
-    private String passwordHash;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

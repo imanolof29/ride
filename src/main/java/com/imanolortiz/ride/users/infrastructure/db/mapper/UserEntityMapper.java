@@ -6,7 +6,16 @@ import com.imanolortiz.ride.users.infrastructure.db.entity.UserEntity;
 public class UserEntityMapper {
 
     public static User toDomain(UserEntity entity) {
-        return new User(entity.getId(), entity.getEmail(), entity.getFullName(), entity.getPasswordHash());
+        return User
+                .builder()
+                .id(entity.getId())
+                .email(entity.getEmail())
+                .fullName(entity.getFullName())
+                .password(entity.getPasswordHash())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .deletedAt(entity.getDeletedAt())
+                .build();
     }
 
     public static UserEntity toEntity(User model) {
@@ -16,6 +25,9 @@ public class UserEntityMapper {
                 .email(model.getEmail())
                 .passwordHash(model.getPassword())
                 .fullName(model.getFullName())
+                .createdAt(model.getCreatedAt())
+                .updatedAt(model.getUpdatedAt())
+                .deletedAt(model.getDeletedAt())
                 .build();
     }
 
